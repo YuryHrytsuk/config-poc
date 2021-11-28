@@ -79,7 +79,6 @@ class Component1(ConfigComponent):
 
 
 class Component2(ConfigComponent):
-    required_components = [Component1]
 
     def configure(self, cfg) -> Dict[str, Any]:
         return {cfg["foo"]: "baz"}
