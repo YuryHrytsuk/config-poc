@@ -87,7 +87,6 @@ class Component2(ConfigComponent):
 
 if __name__ == "__main__":
     c1 = Component1()
-    c2 = Component2()
-    cm = ConfigManager(init_cfg={}, components=[c1, c2])
+    cm = ConfigManager(init_cfg={}, components=[c1, Component2])
     cfg = cm.configure_config()
     print(cfg)
