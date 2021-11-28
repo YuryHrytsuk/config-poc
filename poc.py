@@ -3,12 +3,15 @@ from copy import deepcopy
 from inspect import isclass
 from typing import Any, Dict, List, Optional, Set, Type, Union
 
+FlatDict = Dict[str, Any]
+Config = Dict[str, Any]
+
 
 class ConfigManager:
 
     def __init__(
         self,
-        init_cfg: Dict[str, Any],
+        init_cfg: FlatDict,
         components: Optional[List[Union[Type["ConfigComponent"], "ConfigComponent"]]] = None
     ):
         self.init_cfg = init_cfg
@@ -29,7 +32,7 @@ class ConfigManager:
     def components(self) -> List[Union[Type["ConfigComponent"], "ConfigComponent"]]:
         return self._components
 
-    def configure_config(self) -> Dict[str, Any]:
+    def configure_config(self) -> Config:
         cfg = deepcopy(self.init_cfg)
 
         for component in self.components:
@@ -60,7 +63,7 @@ class ConfigComponent(abc.ABC):
     def manager(self, manager: "ConfigManager") -> None:
         self._manager = manager
 
-    def is_enabled(self, cfg: Dict[str, Any]) -> bool:
+    def is_enabled(self, cfg: FlatDict) -> bool:
         return True
 
     @classmethod
@@ -68,19 +71,19 @@ class ConfigComponent(abc.ABC):
         return cls.__name__
 
     @abc.abstractmethod
-    def configure(self, cfg) -> Dict[str, Any]:
+    def configure(self, cfg) -> FlatDict:
         pass
 
 
 class Component1(ConfigComponent):
 
-    def configure(self, cfg) -> Dict[str, Any]:
+    def configure(self, cfg) -> FlatDict:
         return {"foo": "bar"}
 
 
 class Component2(ConfigComponent):
 
-    def configure(self, cfg) -> Dict[str, Any]:
+    def configure(self, cfg) -> FlatDict:
         return {cfg["foo"]: "baz"}
 
 
