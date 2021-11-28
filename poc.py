@@ -11,7 +11,7 @@ class ConfigManager:
 
     def __init__(
         self,
-        init_cfg: FlatDict,
+        init_cfg: Config,
         components: Optional[List[Union[Type["ConfigComponent"], "ConfigComponent"]]] = None
     ):
         self.init_cfg = init_cfg
@@ -63,7 +63,7 @@ class ConfigComponent(abc.ABC):
     def manager(self, manager: "ConfigManager") -> None:
         self._manager = manager
 
-    def is_enabled(self, cfg: FlatDict) -> bool:
+    def is_enabled(self, cfg: Config) -> bool:
         return True
 
     @classmethod
@@ -71,7 +71,7 @@ class ConfigComponent(abc.ABC):
         return cls.__name__
 
     @abc.abstractmethod
-    def configure(self, cfg) -> FlatDict:
+    def configure(self, cfg: Config) -> FlatDict:
         pass
 
 
